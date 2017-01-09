@@ -18,7 +18,7 @@ calls <- calls[ , !(names(calls) %in% drops)]
 bin_size = 0.08
 calls$long_bin =  cut(calls$long, seq(min(calls$long), max(calls$long), bin_size))
 calls$lat_bin =  cut(calls$lat, seq(min(calls$lat), max(calls$lat), bin_size))
-#calls$total = log(calls$total) / 2 #need to do this to flatten out totals
+calls$count = (calls$count) / 2 #need to do this to flatten out totals
 
 #So now we’ve created a grid system, with each row in the dataset falling into a 0.18 x 0.18 degree grid square 
 #(I chose 0.18 for the most important reason – its makes the visualization look better :-)). 
@@ -53,7 +53,7 @@ col <- topo.colors(ylen)[ calls-ylim[1]+1 ]
 x =  (1: nrow(calls))
 z =  (1: ncol(calls))
 
-rgl.bg(sphere=TRUE,color=c("black","green"),  lit=TRUE)
+rgl.bg(sphere=TRUE,color=c("black","green"),  lit=FALSE)
 #rgl.bg(sphere=TRUE, lit=TRUE, back="filled",fogtype="exp",texture=system.file("textures/sunsleep.png",package="rgl"))
 
 
