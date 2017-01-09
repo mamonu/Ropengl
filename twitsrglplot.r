@@ -1,7 +1,11 @@
 library(rgl)
 library(reshape)
+calls = read.delim('twits.csv', header = T,sep = ",",stringsAsFactors = FALSE)
 
-calls = read.delim('call_data.tsv', header = T)
+
+drops <- c("PersonalDescription","student","retired","football_team","language","location","username")
+calls <- calls[ , !(names(calls) %in% drops)]
+
 
 
 # our calls dataset has arbitrary lat/long pairs. So (as ever) we’ll need to do some manipulation of our data 
@@ -11,10 +15,10 @@ calls = read.delim('call_data.tsv', header = T)
 
 
 
-bin_size = 0.4
+bin_size = 0.08
 calls$long_bin =  cut(calls$long, seq(min(calls$long), max(calls$long), bin_size))
 calls$lat_bin =  cut(calls$lat, seq(min(calls$lat), max(calls$lat), bin_size))
-calls$total = log(calls$total) / 2 #need to do this to flatten out totals
+#calls$total = log(calls$total) / 2 #need to do this to flatten out totals
 
 #So now we’ve created a grid system, with each row in the dataset falling into a 0.18 x 0.18 degree grid square 
 #(I chose 0.18 for the most important reason – its makes the visualization look better :-)). 
@@ -23,7 +27,7 @@ calls$total = log(calls$total) / 2 #need to do this to flatten out totals
 
 
 
-calls = melt(calls[,3:5])
+calls = melt(calls[,5:7])
 calls = cast(calls, lat_bin~long_bin, fun = sum, fill = 0)
 calls = calls[,2:(ncol(calls)-1)]
 calls = as.matrix(calls)
@@ -49,8 +53,8 @@ col <- topo.colors(ylen)[ calls-ylim[1]+1 ]
 x =  (1: nrow(calls))
 z =  (1: ncol(calls))
 
-#rgl.bg(sphere=TRUE,color=c("black","green"),  lit=TRUE)
-rgl.bg(sphere=TRUE, lit=TRUE, back="filled",fogtype="exp",texture=system.file("textures/sunsleep.png",package="rgl"))
+rgl.bg(sphere=TRUE,color=c("black","green"),  lit=TRUE)
+#rgl.bg(sphere=TRUE, lit=TRUE, back="filled",fogtype="exp",texture=system.file("textures/sunsleep.png",package="rgl"))
 
 
 
@@ -60,4 +64,4 @@ rgl.bringtotop()
 
 
 
-#browseURL(paste("file://", writeWebGL(dir=file.path(tempdir(), "webGL"), width=800), sep=""))
+browseURL(paste("file://", writeWebGL(dir=file.path(tempdir(), "webGL"), width=800), sep=""))
