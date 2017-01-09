@@ -16,6 +16,9 @@ calls$long_bin =  cut(calls$long, seq(min(calls$long), max(calls$long), bin_size
 calls$lat_bin =  cut(calls$lat, seq(min(calls$lat), max(calls$lat), bin_size))
 calls$total = log(calls$total) / 2 #need to do this to flatten out totals
 
+
+
+
 #So now we’ve created a grid system, with each row in the dataset falling into a 0.18 x 0.18 degree grid square 
 #(I chose 0.18 for the most important reason – its makes the visualization look better :-)). 
 #Next we have to sum up all the call counts which are in the same lat/long bucket. 

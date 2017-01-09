@@ -15,7 +15,7 @@ calls <- calls[ , !(names(calls) %in% drops)]
 
 
 
-bin_size = 0.08
+bin_size = 0.1
 calls$long_bin =  cut(calls$long, seq(min(calls$long), max(calls$long), bin_size))
 calls$lat_bin =  cut(calls$lat, seq(min(calls$lat), max(calls$lat), bin_size))
 calls$count = (calls$count) / 2 #need to do this to flatten out totals
